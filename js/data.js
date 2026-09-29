@@ -16,7 +16,7 @@ window.SEED = (function () {
       level: '高级',                 /* 当前等级 */
       craft: 16798,                  /* 匠心值 */
       sitesActive: 34,               /* 当前进行工地数 */
-      avatar: '🧑‍🔧',
+      avatar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.8"/><path d="M4.8 20.2c1.4-3.9 4.1-5.6 7.2-5.6s5.8 1.7 7.2 5.6"/></svg>',
       income: { total: 3499.33, pending: 3499.33, year: 3499.33, monthNew: 13243.00 },
       coins: 23346,                  /* 鲁班币 */
       doneLessons: 34, leftLessons: 123,
@@ -230,11 +230,11 @@ window.SEED = (function () {
 
     /* ---------- 成长记录 / 荣誉 ---------- */
     growth: [
-      { title: '完成高级技师评级考试，成绩为95分', up: '上升等级：高级技师', time: '2020-08-27 10:33', medal: '🏆', color: '#F3E8FF' },
-      { title: '完成技师评级考试，成绩为90分', up: '上升等级：技师', time: '2020-06-27 10:33', medal: '🎖️', color: '#FDEBF3' },
-      { title: '完成高级评级考试，成绩为90分', up: '上升等级：高级', time: '2020-08-27 10:33', medal: '🏅', color: '#FFF3D6' },
-      { title: '完成中级评级考试，成绩为85分', up: '上升等级：中级', time: '2020-06-27 10:33', medal: '🥇', color: '#FFF7E0' },
-      { title: '完成初级评级考试，成绩为80分', up: '上升等级：初级', time: '2020-08-27 10:33', medal: '🎗️', color: '#F1F1F1' }
+      { title: '完成高级技师评级考试，成绩为95分', up: '上升等级：高级技师', time: '2020-08-27 10:33', medal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14.6" r="5.4"/><path d="m9 9.6-2.6-6h11.2L15 9.6"/><path d="m12 12.2.9 1.9 2 .3-1.5 1.4.4 2-1.8-1-1.8 1 .4-2-1.5-1.4 2-.3z"/></svg>', color: '#F3E8FF' },
+      { title: '完成技师评级考试，成绩为90分', up: '上升等级：技师', time: '2020-06-27 10:33', medal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14.6" r="5.4"/><path d="m9 9.6-2.6-6h11.2L15 9.6"/><path d="m12 12.2.9 1.9 2 .3-1.5 1.4.4 2-1.8-1-1.8 1 .4-2-1.5-1.4 2-.3z"/></svg>', color: '#FDEBF3' },
+      { title: '完成高级评级考试，成绩为90分', up: '上升等级：高级', time: '2020-08-27 10:33', medal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14.6" r="5.4"/><path d="m9 9.6-2.6-6h11.2L15 9.6"/><path d="m12 12.2.9 1.9 2 .3-1.5 1.4.4 2-1.8-1-1.8 1 .4-2-1.5-1.4 2-.3z"/></svg>', color: '#FFF3D6' },
+      { title: '完成中级评级考试，成绩为85分', up: '上升等级：中级', time: '2020-06-27 10:33', medal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14.6" r="5.4"/><path d="m9 9.6-2.6-6h11.2L15 9.6"/><path d="m12 12.2.9 1.9 2 .3-1.5 1.4.4 2-1.8-1-1.8 1 .4-2-1.5-1.4 2-.3z"/></svg>', color: '#FFF7E0' },
+      { title: '完成初级评级考试，成绩为80分', up: '上升等级：初级', time: '2020-08-27 10:33', medal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14.6" r="5.4"/><path d="m9 9.6-2.6-6h11.2L15 9.6"/><path d="m12 12.2.9 1.9 2 .3-1.5 1.4.4 2-1.8-1-1.8 1 .4-2-1.5-1.4 2-.3z"/></svg>', color: '#F1F1F1' }
     ],
     honors: [
       { title: '晶鲤焕新家2020-2021杰出贡献奖', amount: '¥ 1000.00', time: '2022-03-22', cover: '2020-2021 表彰大会' },
@@ -251,14 +251,14 @@ window.SEED = (function () {
     /* ---------- 买工具（鲁班币商城） ---------- */
     mallCats: ['测量工具', '电动工具', '仪器仪表', '电子电工', '手动工具'],
     iconCats: [
-      { name: '游标卡尺', icon: '📏' }, { name: '钢圈尺', icon: '🗜️' },
-      { name: '轮式测距仪', icon: '🛞' }, { name: '水平尺', icon: '📐' }
+      { name: '游标卡尺', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.6" y="8.4" width="18.8" height="7.2" rx="1.6" transform="rotate(-12 12 12)"/><path d="m8 9.6.9 1.9M11.4 8.7l.9 1.9M14.8 7.8l.9 1.9"/></svg>' }, { name: '钢圈尺', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.6" y="8.4" width="18.8" height="7.2" rx="1.6" transform="rotate(-12 12 12)"/><path d="m8 9.6.9 1.9M11.4 8.7l.9 1.9M14.8 7.8l.9 1.9"/></svg>' },
+      { name: '轮式测距仪', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.6" y="8.4" width="18.8" height="7.2" rx="1.6" transform="rotate(-12 12 12)"/><path d="m8 9.6.9 1.9M11.4 8.7l.9 1.9M14.8 7.8l.9 1.9"/></svg>' }, { name: '水平尺', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.6" y="8.4" width="18.8" height="7.2" rx="1.6" transform="rotate(-12 12 12)"/><path d="m8 9.6.9 1.9M11.4 8.7l.9 1.9M14.8 7.8l.9 1.9"/></svg>' }
     ],
     goods: [
-      { id: 'M1', name: '得力(deli)大轮电子数显测距轮尺手持式测量轮尺', price: 234, buyers: 84, sold: 231, icon: '🛞', brand: 'deli得力', specs: { '商品货号': 'J02003783A', '型号': 'DL4779', '施工测漏': '测距仪' } },
-      { id: 'M2', name: '得力(deli)大轮电子数显测距轮尺手持式测量轮尺', price: 2399, buyers: 84, sold: 231, icon: '📐', brand: 'deli得力', specs: { '商品货号': 'J02003783A', '型号': 'DL4779', '施工测漏': '测距仪' } },
-      { id: 'M3', name: '得力(deli)大轮电子数显测距轮尺手持式测量轮尺', price: 234, buyers: 84, sold: 231, icon: '📏', brand: 'deli得力', specs: { '商品货号': 'J02003784B', '型号': 'DL4780', '施工测漏': '测距仪' } },
-      { id: 'M4', name: '得力(deli)大轮电子数显测距轮尺手持式测量轮尺', price: 2399, buyers: 84, sold: 231, icon: '🗜️', brand: 'deli得力', specs: { '商品货号': 'J02003785C', '型号': 'DL4781', '施工测漏': '测距仪' } }
+      { id: 'M1', name: '得力(deli)大轮电子数显测距轮尺手持式测量轮尺', price: 234, buyers: 84, sold: 231, icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.6" y="8.4" width="18.8" height="7.2" rx="1.6" transform="rotate(-12 12 12)"/><path d="m8 9.6.9 1.9M11.4 8.7l.9 1.9M14.8 7.8l.9 1.9"/></svg>', brand: 'deli得力', specs: { '商品货号': 'J02003783A', '型号': 'DL4779', '施工测漏': '测距仪' } },
+      { id: 'M2', name: '得力(deli)大轮电子数显测距轮尺手持式测量轮尺', price: 2399, buyers: 84, sold: 231, icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.6" y="8.4" width="18.8" height="7.2" rx="1.6" transform="rotate(-12 12 12)"/><path d="m8 9.6.9 1.9M11.4 8.7l.9 1.9M14.8 7.8l.9 1.9"/></svg>', brand: 'deli得力', specs: { '商品货号': 'J02003783A', '型号': 'DL4779', '施工测漏': '测距仪' } },
+      { id: 'M3', name: '得力(deli)大轮电子数显测距轮尺手持式测量轮尺', price: 234, buyers: 84, sold: 231, icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.6" y="8.4" width="18.8" height="7.2" rx="1.6" transform="rotate(-12 12 12)"/><path d="m8 9.6.9 1.9M11.4 8.7l.9 1.9M14.8 7.8l.9 1.9"/></svg>', brand: 'deli得力', specs: { '商品货号': 'J02003784B', '型号': 'DL4780', '施工测漏': '测距仪' } },
+      { id: 'M4', name: '得力(deli)大轮电子数显测距轮尺手持式测量轮尺', price: 2399, buyers: 84, sold: 231, icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.6" y="8.4" width="18.8" height="7.2" rx="1.6" transform="rotate(-12 12 12)"/><path d="m8 9.6.9 1.9M11.4 8.7l.9 1.9M14.8 7.8l.9 1.9"/></svg>', brand: 'deli得力', specs: { '商品货号': 'J02003785C', '型号': 'DL4781', '施工测漏': '测距仪' } }
     ],
     mallOrders: [
       { id: 'MO1', time: '2022-04-19 12:00', goods: 'M1', qty: 1, status: '待领取', code: '37378373827383', orderNo: '384574839283748', orderedAt: '2022-04-19 12:22:12' },

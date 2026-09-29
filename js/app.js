@@ -160,7 +160,7 @@
           '<div class="sub">日程</div><div>个人安排</div>' +
           '<div class="sub" style="margin-top:6px;">状态</div><div>' + (e.done ? '已完成' : '未开始') + '</div></div>'
         : '<div style="text-align:left;font-size:14px;line-height:2.2;">' +
-          '<div class="sub">项目主管</div><div>' + U.esc(e.proj ? '王东东 / 13888898998 📞' : '') + '</div>' +
+          '<div class="sub">项目主管</div><div>' + U.esc(e.proj ? '王东东 / 13888898998 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.2 3.6h3.1l1.4 3.6-2 1.4a12.4 12.4 0 0 0 6.7 6.7l1.4-2 3.6 1.4v3.1a2 2 0 0 1-2.2 2A17.6 17.6 0 0 1 4.2 5.8a2 2 0 0 1 2-2.2z"/></svg>' : '') + '</div>' +
           '<div class="sub" style="margin-top:6px;">项目名称</div><div>' + U.esc(e.proj) + '</div>' +
           '<div class="sub" style="margin-top:6px;">施工地址</div><div>北京市海淀区志新北里10号楼1门202</div>' +
           '<div class="sub" style="margin-top:6px;">施工节点</div><div>卫生间墙面防水施工</div>' +

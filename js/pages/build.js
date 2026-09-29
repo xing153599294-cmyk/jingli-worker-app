@@ -38,7 +38,7 @@ window.Pages = window.Pages || {};
         }).join('') + '</div>';
     }).join('');
     return /* 无页头：tab 页 */ '' +
-      '<div class="month-head"><span class="m">' + U.esc(monthLabel) + '</span><span class="muted" style="font-size:18px;">🔍</span></div>' +
+      '<div class="month-head"><span class="m">' + U.esc(monthLabel) + '</span><span class="muted" style="font-size:18px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.6"/><path d="m16 16 4.5 4.5"/></svg></span></div>' +
       '<div class="week-strip">' + strip + '</div>' + cards +
       '<div class="fab" data-act="go" data-go="#/schedule">' + U.ic.cal + '<span>施工安排</span></div>' +
       '<div style="height:70px;"></div>';
@@ -81,7 +81,7 @@ window.Pages = window.Pages || {};
       body = '<div class="std-title">效果图</div>' +
         '<div class="photo-grid" style="margin-left:12px;"><div class="ph-box" style="width:200px;height:130px;display:flex;align-items:flex-end;justify-content:center;color:#8A7A5E;font-size:12px;padding-bottom:8px;">' + U.esc(p.drawings.effect) + '</div></div>' +
         '<div class="std-title">施工图</div>' +
-        '<div class="photo-grid" style="margin-left:12px;"><div class="ph-box" style="width:200px;height:130px;display:flex;align-items:flex-end;justify-content:center;color:#8A7A5E;font-size:12px;padding-bottom:8px;background:repeating-linear-gradient(45deg,#F2EEE6,#F2EEE6 6px,#EAE4D6 6px,#EAE4D6 12px);">' + U.esc(p.drawings.plan) + '</div></div>';
+        '<div class="photo-grid" style="margin-left:12px;"><div class="ph-box" style="width:200px;height:130px;display:flex;align-items:flex-end;justify-content:center;color:#6E7579;font-size:12px;padding-bottom:8px;background:repeating-linear-gradient(45deg,#F1F2F3,#F1F2F3 6px,#E7E9EB 6px,#E7E9EB 12px);">' + U.esc(p.drawings.plan) + '</div></div>';
     } else if (tab === '物料配送') {
       body = p.materials.map(function (m) {
         return '<div class="card">' +
@@ -107,7 +107,7 @@ window.Pages = window.Pages || {};
         '<div class="rowline"><span class="k">项目名称</span><span class="v"><b>' + U.esc(p.name) + '</b>&nbsp;' + U.tag(p.tag) + '&nbsp;<span class="tag solid">' + U.esc(p.phase) + '</span></span></div>' +
         '<div class="rowline"><span class="k">施工地址</span><span class="v">' + U.esc(p.addr) + '</span></div>' +
         '<div class="rowline"><span class="k">项目周期</span><span class="v">' + U.esc(p.cycle) + '</span></div>' +
-        '<div class="rowline"><span class="k">项目主管</span><span class="v">' + U.esc(p.manager) + '&nbsp;<b class="link-green">📞</b></span></div>' +
+        '<div class="rowline"><span class="k">项目主管</span><span class="v">' + U.esc(p.manager) + '&nbsp;<b class="link-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.2 3.6h3.1l1.4 3.6-2 1.4a12.4 12.4 0 0 0 6.7 6.7l1.4-2 3.6 1.4v3.1a2 2 0 0 1-2.2 2A17.6 17.6 0 0 1 4.2 5.8a2 2 0 0 1 2-2.2z"/></svg></b></span></div>' +
       '</div>' +
       '<div class="proj-tabs">' + ['施工节点', '图纸', '物料配送', '结算记录'].map(function (t) {
         return '<div class="pt' + (t === tab ? ' on' : '') + '" data-act="proj-tab" data-tab="' + t + '">' + t + '</div>';
@@ -125,9 +125,9 @@ window.Pages = window.Pages || {};
           '<b style="font-size:16px;">' + U.esc(n.name) + '</b>' +
           '<span>' + (n.over > 0 ? '<span class="money" style="font-size:12px;font-weight:400;">（逾期' + n.over + '天）</span> ' : '') + stTag + '</span>' +
         '</div>' +
-        '<div class="sub" style="margin-top:10px;">🔧 工程量：' + U.esc(n.qty) + '</div>' +
-        '<div class="sub" style="margin-top:6px;">🕐 计划开始时间：' + U.esc(n.planStart) + '</div>' +
-        '<div class="sub" style="margin-top:6px;">🕐 实际完成时间：' + U.esc(n.planEnd) + '</div>' +
+        '<div class="sub" style="margin-top:10px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.6 6.6a4.4 4.4 0 0 1 5.9-4.1l-3.2 3.2 1.2 1.2 3.3-3.3a4.4 4.4 0 0 1-4.1 5.9L7 18.4a2 2 0 1 1-2.8-2.8z"/></svg> 工程量：' + U.esc(n.qty) + '</div>' +
+        '<div class="sub" style="margin-top:6px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.4V12l3 2"/></svg> 计划开始时间：' + U.esc(n.planStart) + '</div>' +
+        '<div class="sub" style="margin-top:6px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.4V12l3 2"/></svg> 实际完成时间：' + U.esc(n.planEnd) + '</div>' +
       '</div>' +
       '<div class="std-title">验收标准<span class="look" data-act="toast" data-msg="验收标准：' + U.esc(n.name) + '">点击查看</span></div>' +
       '<div class="std-title" style="margin-top:0;">' + U.esc(n.name) + '情况</div>' +
@@ -227,7 +227,7 @@ window.Pages = window.Pages || {};
       '<div class="rows" style="margin-top:0;">' +
         '<div class="cell"><span class="k">项目名称</span><span class="v" style="font-weight:600;">' + U.esc(r.proj) + '</span></div>' +
         '<div class="cell"><span class="k">施工地址</span><span class="v">' + U.esc(r.addr) + '</span></div>' +
-        '<div class="cell"><span class="k">项目主管</span><span class="v">' + U.esc(r.manager) + ' 📞</span></div>' +
+        '<div class="cell"><span class="k">项目主管</span><span class="v">' + U.esc(r.manager) + ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.2 3.6h3.1l1.4 3.6-2 1.4a12.4 12.4 0 0 0 6.7 6.7l1.4-2 3.6 1.4v3.1a2 2 0 0 1-2.2 2A17.6 17.6 0 0 1 4.2 5.8a2 2 0 0 1 2-2.2z"/></svg></span></div>' +
       '</div>' +
       '<div class="form-label">调整内容</div>' +
       '<div class="rows" style="margin-top:0;">' +
@@ -235,7 +235,7 @@ window.Pages = window.Pages || {};
         '<div class="cell"><span class="k">原计划：</span><span class="v">' + U.esc(r.plan) + '</span></div>' +
         '<div class="cell"><span class="k">调整为：</span><span class="v">' + U.esc(r.adjust) + '</span></div>' +
         '<div class="cell"><span class="k">备注：</span><span class="v">' + U.esc(r.note) + '</span></div>' +
-        '<div class="cell"><span class="voice-bubble">🎙 <span class="bars">| | | |</span> ' + U.esc(r.voice) + '</span></div>' +
+        '<div class="cell"><span class="voice-bubble"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0h-1.8a4.7 4.7 0 0 1-9.4 0z"/><path d="M11 19.4h2V22h-2z"/></svg> <span class="bars">| | | |</span> ' + U.esc(r.voice) + '</span></div>' +
       '</div>' +
       '<div class="form-label" style="display:flex;justify-content:space-between;">调整状态<span class="money" style="font-weight:400;">' + U.esc(r.status) + '</span></div>' +
       '<div class="bottom-bar">' +

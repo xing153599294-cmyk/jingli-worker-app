@@ -10,7 +10,7 @@ window.Pages = window.Pages || {};
       '<div class="banner">' +
         '<div class="code">让每一个家都更好 · <b>超放心</b></div>' +
         '<div class="brand">晶鲤焕新家</div>' +
-        '<div class="slogan"><span class="pill">超放心</span><span class="rest">家装</span></div>' +
+        '<div class="slogan">产业工人端 · 匠心服务平台</div>' +
       '</div>' +
       '<div class="notice-card">' +
         '<div class="hd"><span class="t">公告</span><span class="more" data-act="go" data-go="#/notices">更多</span></div>' +
@@ -28,7 +28,7 @@ window.Pages = window.Pages || {};
         entry('买工具', 'c4', '#/mall', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16l-1.3 11.2a2 2 0 0 1-2 1.8H7.3a2 2 0 0 1-2-1.8z"/><path d="M9 11V6a3 3 0 0 1 6 0v5"/></svg>') +
       '</div>' +
       '<div class="notify-bar" data-act="go" data-go="#/messages">' +
-        '<span class="bell">🔔</span><span class="txt">' + (unreadMsg ? '接到一个新项目' : '暂无新消息') + '</span>' +
+        '<span class="bell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8.6a6 6 0 1 0-12 0c0 5-2 6.4-2 6.4h16s-2-1.4-2-6.4z"/><path d="M13.7 19a2 2 0 0 1-3.4 0"/></svg></span><span class="txt">' + (unreadMsg ? '接到一个新项目' : '暂无新消息') + '</span>' +
         '<span class="arrow">' + U.ic.right + '</span>' +
       '</div>';
     return html;

@@ -22,14 +22,14 @@ window.Pages = window.Pages || {};
           '<div class="price"><span class="lb">鲁班币</span><span class="v">' + g.price + '</span><span>' + g.buyers + '人购买</span></div></div>';
       }).join('') + '</div>' +
       '<div style="height:80px;"></div>' +
-      '<div class="cart-fab" data-act="go" data-go="#/morders">🛒<span class="n">' + S.mallOrders.filter(function (o) { return o.status === '待领取'; }).length + '</span></div>';
+      '<div class="cart-fab" data-act="go" data-go="#/morders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9.5" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/><path d="M3 4h2.4l2.6 11.2h10.4l2-8H6.4"/></svg><span class="n">' + S.mallOrders.filter(function (o) { return o.status === '待领取'; }).length + '</span></div>';
   };
 
   /* ---------- 商品详情 ---------- */
   Pages.goods = function (S, id) {
     var g = Store.goods(id) || S.goods[0];
     return U.nav('宝贝详情') +
-      '<div class="photo-grid" style="margin:10px 12px;"><div class="ph-box" style="width:100%;height:210px;display:flex;align-items:center;justify-content:center;font-size:60px;background:linear-gradient(150deg,#F8D75A,#E89B16);">' + g.icon + '</div></div>' +
+      '<div class="photo-grid" style="margin:10px 12px;"><div class="ph-box" style="width:100%;height:210px;display:flex;align-items:center;justify-content:center;font-size:60px;background:linear-gradient(135deg,#EDEEF0,#E1E3E5);">' + g.icon + '</div></div>' +
       '<div class="card">' +
         '<div class="price" style="display:flex;align-items:baseline;gap:6px;"><span class="tag red" style="vertical-align:0;">鲁班币</span><span class="money" style="font-size:26px;">' + g.price + '</span></div>' +
         '<div style="font-size:15px;line-height:1.6;margin-top:8px;">' + U.esc(g.name) + '</div>' +
@@ -67,7 +67,7 @@ window.Pages = window.Pages || {};
           '<span>' + U.esc(o.time) + '</span>' +
           '<span style="color:' + (o.status === '待领取' ? '#F59A23' : '#9C9C9C') + ';">' + U.esc(o.status) + '</span></div>' +
           '<div style="display:flex;gap:10px;margin-top:12px;">' +
-          '<div class="ph-box" style="width:74px;height:74px;display:flex;align-items:center;justify-content:center;font-size:26px;background:linear-gradient(135deg,#F5C63C,#E89B16);border-radius:6px;flex:none;">' + g.icon + '</div>' +
+          '<div class="ph-box" style="width:74px;height:74px;display:flex;align-items:center;justify-content:center;font-size:26px;background:linear-gradient(135deg,#EDEEF0,#E1E3E5);border-radius:6px;flex:none;">' + g.icon + '</div>' +
           '<div style="flex:1;"><div style="font-size:14px;line-height:1.5;">' + U.esc(g.name) + '</div>' +
           '<div style="display:flex;justify-content:space-between;margin-top:10px;font-size:12px;">' +
           '<span class="sub">鲁班币 <span class="money" style="font-size:15px;">' + g.price + '</span></span>' +
@@ -81,7 +81,7 @@ window.Pages = window.Pages || {};
     var g = Store.goods(o.goods) || S.goods[0];
     return U.nav('订单详情') +
       '<div class="card"><div style="display:flex;gap:10px;">' +
-        '<div style="width:74px;height:74px;display:flex;align-items:center;justify-content:center;font-size:26px;background:linear-gradient(135deg,#F5C63C,#E89B16);border-radius:6px;flex:none;">' + g.icon + '</div>' +
+        '<div style="width:74px;height:74px;display:flex;align-items:center;justify-content:center;font-size:26px;background:linear-gradient(135deg,#EDEEF0,#E1E3E5);border-radius:6px;flex:none;">' + g.icon + '</div>' +
         '<div style="flex:1;"><div style="font-size:14px;line-height:1.5;">' + U.esc(g.name) + '</div>' +
         '<div class="sub" style="margin-top:4px;">数量-大轮&nbsp;&nbsp;·&nbsp;&nbsp;1.838kg</div>' +
         '<div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;">' +

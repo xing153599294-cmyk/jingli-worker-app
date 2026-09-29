@@ -2,194 +2,294 @@
 (function () {
   var U = window.UI;
   window._S = window.Store.load();
-  window._orderTab = '全部';
-
-  /* ---------- 图标 ---------- */
-  var ICONS = {
-    home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>',
-    grab: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4.5 13.5H11L9.5 22 19.5 9.5H13L13 2z"/></svg>',
-    orders: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>',
-    wallet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 10h18"/><circle cx="17" cy="15" r="1.4" fill="currentColor"/></svg>',
-    me: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-3.5 4.5-5 8-5s6.5 1.5 8 5"/></svg>'
-  };
 
   var TABS = [
-    { hash: '#/home', label: '工作台', icon: 'home' },
-    { hash: '#/grab', label: '抢单', icon: 'grab', grab: true },
-    { hash: '#/orders', label: '订单', icon: 'orders' },
-    { hash: '#/wallet', label: '钱包', icon: 'wallet' },
-    { hash: '#/profile', label: '我的', icon: 'me' }
+    { hash: '#/home', label: '首页', icon: 'home' },
+    { hash: '#/grab', label: '接单', icon: 'grab' },
+    { hash: '#/build', label: '施工中', icon: 'build' },
+    { hash: '#/me', label: '我的', icon: 'me' }
   ];
 
-  /* ---------- 渲染 ---------- */
   function renderTabbar(active) {
     document.getElementById('tabbar').innerHTML = TABS.map(function (t) {
-      var inner = t.grab
-        ? '<span class="bubble">' + ICONS[t.icon] + '</span>'
-        : ICONS[t.icon];
-      return '<div class="tab' + (t.grab ? ' grab-tab' : '') + (active === t.hash ? ' on' : '') +
-        '" data-act="go" data-go="' + t.hash + '">' + inner + '<span>' + t.label + '</span></div>';
+      return '<div class="tab' + (active === t.hash ? ' on' : '') +
+        '" data-act="go" data-go="' + t.hash + '">' + U.tabIcons[t.icon] + '<span>' + t.label + '</span></div>';
     }).join('');
   }
 
   function render() {
     var hash = location.hash || '#/home';
-    var base = '#/' + (hash.split('/')[1] || 'home');
-    var html;
-    if (hash.indexOf('#/order/') === 0) {
-      html = window.Pages.orderDetail(window._S, hash.slice('#/order/'.length));
-    } else if (base === '#/home') html = window.Pages.home(window._S);
-    else if (base === '#/grab') html = window.Pages.grab(window._S);
-    else if (base === '#/orders') html = window.Pages.orders(window._S);
-    else if (base === '#/wallet') html = window.Pages.wallet(window._S);
-    else if (base === '#/profile') html = window.Pages.profile(window._S);
-    else html = window.Pages.home(window._S);
-    document.getElementById('app').innerHTML = html;
-    document.getElementById('app').scrollTop = 0;
-    renderTabbar(base);
-  }
+    var seg = hash.slice(2).split('/');          /* 去掉 '#/' */
+    var base = seg[0] || 'home';
+    var P = window.Pages, html;
 
-  /* ---------- 留痕 ---------- */
-  function log(o, text) {
-    o.timeline.push({ time: Date.now(), text: text });
+    if (base === 'home') html = P.home(window._S);
+    else if (base === 'notices') html = P.notices(window._S);
+    else if (base === 'notice') html = P.noticeDetail(window._S, seg[1]);
+    else if (base === 'messages') html = P.messages(window._S);
+    else if (base === 'grab') html = P.grab(window._S);
+    else if (base === 'grab-detail') html = P.grabDetail(window._S, seg[1]);
+    else if (base === 'build') html = P.build(window._S);
+    else if (base === 'records') html = P.records(window._S);
+    else if (base === 'project') html = P.project(window._S, seg[1]);
+    else if (base === 'node') html = P.node(window._S, seg[1], seg[2]);
+    else if (base === 'schedule') html = P.schedule(window._S);
+    else if (base === 'schedule-add') html = P.scheduleAdd(window._S);
+    else if (base === 'reschedule') html = P.reschedule(window._S);
+    else if (base === 'resched') html = P.reschedDetail(window._S, seg[1]);
+    else if (base === 'rectify') html = P.rectify(window._S);
+    else if (base === 'rectify-detail') html = P.rectifyDetail(window._S, seg[1]);
+    else if (base === 'study') html = P.study(window._S);
+    else if (base === 'tasks') html = P.tasks(window._S);
+    else if (base === 'lesson') html = P.lesson(window._S, seg[1]);
+    else if (base === 'publish') html = P.publishVideo(window._S);
+    else if (base === 'rating') html = P.rating(window._S);
+    else if (base === 'rating-guide') html = P.ratingGuide(window._S);
+    else if (base === 'exams') html = P.exams(window._S);
+    else if (base === 'growth') html = P.growth(window._S);
+    else if (base === 'honors') html = P.honors(window._S);
+    else if (base === 'mall') html = P.mall(window._S);
+    else if (base === 'goods') html = P.goods(window._S, seg[1]);
+    else if (base === 'morders') html = P.mallOrders(window._S);
+    else if (base === 'morder') html = P.mallOrder(window._S, seg[1]);
+    else if (base === 'me') html = P.me(window._S);
+    else if (base === 'income') html = P.income(window._S);
+    else if (base === 'pending') html = P.pending(window._S);
+    else if (base === 'coins') html = P.coins(window._S);
+    else if (base === 'feedback') html = P.feedback(window._S);
+    else html = P.home(window._S);
+
+    var app = document.getElementById('app');
+    app.innerHTML = html;
+    app.scrollTop = 0;
+
+    var isTab = TABS.some(function (t) { return t.hash === '#/' + base; });
+    document.getElementById('tabbar').style.display = isTab ? 'flex' : 'none';
+    renderTabbar(isTab ? '#/' + base : '');
   }
 
   /* ---------- 动作 ---------- */
   var ACT = {
     'go': function (el) { location.hash = el.dataset.go; },
+    'back': function () { history.back(); },
+    'modal-close': function () { U.closeModal(); },
+    'toast': function (el) { U.toast(el.dataset.msg || '演示操作'); },
+    'toast-hist': function () { U.toast('历史考试（演示）'); },
+    'toast-coin': function () { U.toast('鲁班币可通过发布施工工艺视频等获得'); },
 
-    'order-tab': function (el) {
-      window._orderTab = el.dataset.tab;
+    /* 公告 / 消息 */
+    'open-notice': function (el) { location.hash = '#/notice/' + el.dataset.id; },
+    'read-all': function () {
+      window._S.messages.forEach(function (m) { m.unread = false; });
+      window._S.notices.forEach(function (n) { n.unread = false; });
+      Store.save(window._S);
+      U.toast('已全部标记为已读');
       render();
     },
 
-    /* 服务商指派：确认接单 */
-    'confirm-assign': function (el) {
-      var o = window.Store.order(el.dataset.id);
-      if (!o) return;
-      o.status = '已接单';
-      o.source = '';
-      log(o, '已确认接单');
-      window.Store.save(window._S);
-      U.toast('接单成功，请尽快与客户约进场时间');
+    /* 接单 */
+    'grab-tab': function (el) { window._grabTab = el.dataset.tab; render(); },
+    'open-grab': function (el) { location.hash = '#/grab-detail/' + el.dataset.id; },
+    'accept-grab': function (el) {
+      var p = Store.grab(el.dataset.id);
+      if (!p) return;
+      U.closeModal();
+      p.accepted = true; p.status = '已接单';
+      Store.save(window._S);
+      U.toast('接单成功，请安排施工');
       render();
     },
 
-    /* 指派：拒绝 → 订单回到抢单大厅 */
-    'reject-assign': function (el) {
-      var o = window.Store.order(el.dataset.id);
-      if (!o) return;
-      if (!window.confirm('确认无法承接该订单吗？订单将回到抢单大厅。')) return;
-      o.status = '待抢单';
-      o.source = '指派被拒后进入抢单大厅';
-      o.grabDeadline = Date.now() + 120 * 60 * 1000;
-      o.boostCost = 50;
-      log(o, '工人拒绝指派，订单回到抢单大厅');
-      window.Store.save(window._S);
-      U.toast('已退回，订单进入抢单大厅');
-      location.hash = '#/grab';
-    },
+    /* 施工中 */
+    'build-day': function (el) { window._buildSel = Number(el.dataset.day); render(); },
+    'open-proj': function (el) { window._projTab = '施工节点'; location.hash = '#/project/' + el.dataset.id; },
+    'proj-tab': function (el) { window._projTab = el.dataset.tab; render(); },
+    'open-node': function (el) { location.hash = '#/node/' + el.dataset.id + '/' + el.dataset.idx; },
 
-    /* 开始施工 */
-    'start-work': function (el) {
-      var o = window.Store.order(el.dataset.id);
-      if (!o) return;
-      o.status = '施工中';
-      log(o, '开始施工');
-      window.Store.save(window._S);
-      U.toast('已开始施工');
-      render();
-    },
-
-    /* 节点拍照上传（原型内模拟拍照） */
-    'upload': function (el) {
-      var o = window.Store.order(el.dataset.id);
-      var n = o && o.nodes[Number(el.dataset.idx)];
+    'node-upload': function (el) {
+      var p = Store.proj(el.dataset.id); var n = p && p.nodes[Number(el.dataset.idx)];
       if (!n) return;
-      var remark = window.prompt('填写施工说明（选填）：', '');
-      if (remark === null) return; /* 取消 */
+      n.photos = n.photos || [];
       n.photos.push(1);
+      Store.save(window._S);
+      U.toast('照片已上传');
+      render();
+    },
+    'node-delphoto': function (el) {
+      var p = Store.proj(el.dataset.id); var n = p && p.nodes[Number(el.dataset.idx)];
+      if (n && n.photos) { n.photos.pop(); Store.save(window._S); render(); }
+    },
+    'node-publish': function (el) {
+      var p = Store.proj(el.dataset.id); var n = p && p.nodes[Number(el.dataset.idx)];
+      if (!n) return;
+      if (!(n.photos || []).length) { U.toast('请先上传施工照片'); return; }
+      U.confirm('发布成功', '确认是否完成该施工工序？', '确认', 'node-confirm',
+        'data-id="' + p.id + '" data-idx="' + el.dataset.idx + '"');
+    },
+    'node-confirm': function (el) {
+      var p = Store.proj(el.dataset.id); var n = p && p.nodes[Number(el.dataset.idx)];
+      if (!n) return;
+      U.closeModal();
       n.status = '已完成';
-      if (remark) n.remark = remark;
-      log(o, '「' + n.name + '」完成，已上传施工照片');
-      window.Store.save(window._S);
-      U.toast('照片已上传，节点完成');
+      n.remark = (document.getElementById('node-remark') || {}).value || '';
+      Store.save(window._S);
+      U.toast('日报已发布，该工序已完成');
+      history.back();
+    },
+    'add-comment': function (el) {
+      var t = window.prompt('写下你的评论：', '');
+      if (!t) return;
+      window._S.comments.unshift({ name: window._S.worker.name, time: '刚刚', text: t, color: '#0B5B45' });
+      Store.save(window._S);
+      U.toast('评论已发布');
       render();
     },
 
-    /* 发起验收 */
-    'request-accept': function (el) {
-      var o = window.Store.order(el.dataset.id);
-      if (!o) return;
-      if (!o.nodes.every(function (n) { return n.photos.length > 0; })) {
-        U.toast('还有节点未上传照片，无法发起验收');
+    /* 施工安排日历 */
+    'cal-day': function (el) {
+      var day = Number(el.dataset.day);
+      var ent = window._S.schedule.filter(function (s) { return s.day === day; });
+      window._addDay = new Date(new Date().getFullYear(), new Date().getMonth(), day);
+      if (!ent.length) {
+        location.hash = '#/schedule-add';
         return;
       }
-      if (!window.confirm('发起验收后，项目管家将在 24 小时内上门验收。确认提交？')) return;
-      o.status = '待验收';
-      log(o, '全部节点完成，已提交验收');
-      window.Store.save(window._S);
-      U.toast('已提交验收，等待项目管家上门');
+      var e = ent[0];
+      var body = e.personal
+        ? '<div style="text-align:left;font-size:14px;line-height:2.2;">' +
+          '<div class="sub">日程</div><div>个人安排</div>' +
+          '<div class="sub" style="margin-top:6px;">状态</div><div>' + (e.done ? '已完成' : '未开始') + '</div></div>'
+        : '<div style="text-align:left;font-size:14px;line-height:2.2;">' +
+          '<div class="sub">项目主管</div><div>' + U.esc(e.proj ? '王东东 / 13888898998 📞' : '') + '</div>' +
+          '<div class="sub" style="margin-top:6px;">项目名称</div><div>' + U.esc(e.proj) + '</div>' +
+          '<div class="sub" style="margin-top:6px;">施工地址</div><div>北京市海淀区志新北里10号楼1门202</div>' +
+          '<div class="sub" style="margin-top:6px;">施工节点</div><div>卫生间墙面防水施工</div>' +
+          '<div class="sub" style="margin-top:6px;">状态</div><div>' + (e.done ? '已完成' : '未开始') + '</div></div>';
+      U.modal('<div class="tt" style="text-align:left;font-size:15px;">' + (e.personal ? '日程详情' : '施工安排') + '</div>' +
+        '<div class="bd" style="margin-top:14px;">' + body + '</div>' +
+        '<div class="btns">' +
+        '<div class="btn plain" data-act="' + (e.personal ? 'cancel-personal' : 'modal-close') + '" data-day="' + day + '">' + (e.personal ? '取消安排' : '关闭') + '</div>' +
+        '<div class="btn primary" data-act="go-resched">调整安排</div></div>');
+    },
+    'cancel-personal': function (el) {
+      var day = Number(el.dataset.day);
+      window._S.schedule = window._S.schedule.filter(function (s) { return !(s.day === day && s.personal); });
+      Store.save(window._S);
+      U.closeModal();
+      U.toast('已取消该个人安排');
       render();
     },
-
-    /* 工期延长申请（不加价） */
-    'apply-delay': function (el) {
-      var o = window.Store.order(el.dataset.id);
-      if (!o) return;
-      var days = window.prompt('申请延长几天？', '2');
-      if (!days) return;
-      var reason = window.prompt('延期原因：', '瓷砖到货延迟');
-      if (!reason) return;
-      log(o, '申请工期延长 ' + days + ' 天：' + reason + '（按平台规则，工期延长不加价）');
-      window.Store.save(window._S);
-      U.toast('延期申请已提交，等待项目管家审批');
+    'go-resched': function () { U.closeModal(); location.hash = '#/reschedule'; },
+    'cycle-len': function () {
+      window._addLen = window._addLen === '全天' ? '上午' : (window._addLen === '上午' ? '下午' : '全天');
       render();
     },
-
-    /* 抢单 */
-    'grab': function (el) {
-      var o = window.Store.order(el.dataset.id);
-      if (!o || o.status !== '待抢单') return;
-      o.status = '已接单';
-      log(o, '抢单成功');
-      window.Store.save(window._S);
-      U.toast('抢单成功！请尽快联系客户');
-      render();
+    'add-schedule': function () {
+      var d = window._addDay || new Date();
+      window._S.schedule.push({ day: d.getDate(), seg: window._addLen || '全天', proj: '个人安排', personal: true, done: false });
+      Store.save(window._S);
+      U.toast('已添加施工安排');
+      location.hash = '#/schedule';
+    },
+    'submit-resched': function () {
+      window._S.reschedules.unshift({
+        id: 'R' + (window._S.reschedules.length + 1) + Date.now(),
+        proj: '马泺讯融侨建筑', addr: '北京市北京市海淀区志新北里10号楼1门202',
+        manager: '王东东 / 13000001111', node: '墙面水泥砂浆找平找方',
+        plan: '03-22/全天、03-23/全天、03-24/全天',
+        adjust: '03-25/全天、03-26/全天',
+        note: '个人原因需调整日程', voice: '45″', status: '待审核'
+      });
+      Store.save(window._S);
+      U.toast('调整申请已提交，等待项目主管审核');
+      location.hash = '#/schedule';
     },
 
-    /* 鲁班币强抢：消耗 50 枚直接锁定 */
-    'grab-boost': function (el) {
-      var o = window.Store.order(el.dataset.id);
-      if (!o || o.status !== '待抢单') return;
-      var cost = o.boostCost || 50;
-      if (window._S.worker.coins < cost) {
-        U.toast('鲁班币不足（还差 ' + (cost - window._S.worker.coins) + ' 枚）');
-        return;
-      }
-      if (!window.confirm('将消耗 ' + cost + ' 枚鲁班币强抢该订单，确认吗？')) return;
+    /* 整改单 */
+    'rect-tab': function (el) { window._rectTab = el.dataset.tab; render(); },
+    'open-rect': function (el) { location.hash = '#/rectify-detail/' + el.dataset.id; },
+    'rect-upload': function (el) {
+      var r = Store.rectify(el.dataset.id);
+      if (!r) return;
+      r.photos = (r.photos || 0) + 1;
+      Store.save(window._S);
+      U.toast('照片已上传');
+      render();
+    },
+    'rect-delphoto': function (el) {
+      var r = Store.rectify(el.dataset.id);
+      if (r && r.photos) { r.photos--; Store.save(window._S); render(); }
+    },
+    'rect-submit': function (el) {
+      var r = Store.rectify(el.dataset.id);
+      if (!r) return;
+      if (!r.photos) { U.toast('请先上传整改后照片'); return; }
+      r.status = '已完成';
+      r.done = true;
+      r.reply = (document.getElementById('rect-note') || {}).value || '整改已完成，已重新上传';
+      Store.save(window._S);
+      U.toast('整改单已提交');
+      history.back();
+    },
+
+    /* 课堂 / 评级 / 考试 */
+    'task-tab': function (el) { window._taskTab = el.dataset.tab; render(); },
+    'open-lesson': function (el) { location.hash = '#/lesson/' + el.dataset.id; },
+    'publish-video': function () { location.hash = '#/publish'; },
+    'do-publish': function () {
+      U.confirm('发布成功', '审核通过之后，可获得2积分，<br>积分可用于兑换现金', '确定', 'modal-close');
+    },
+    'go-growth': function () { location.hash = '#/growth'; },
+    'exam-tab': function (el) { window._examTab = el.dataset.tab; render(); },
+
+    /* 买工具 */
+    'mall-cat': function (el) { window._mallCat = el.dataset.cat; render(); },
+    'open-goods': function (el) { location.hash = '#/goods/' + el.dataset.id; },
+    'buy-goods': function (el) {
+      var g = Store.goods(el.dataset.id);
+      if (!g) return;
+      var cost = Math.round(g.price * 0.05) || 12;
+      U.confirm('本次需要', '消耗 <b>' + cost + '</b> 鲁班币，请确认支付！', '确认', 'confirm-buy',
+        'data-id="' + g.id + '" data-cost="' + cost + '"');
+    },
+    'confirm-buy': function (el) {
+      var g = Store.goods(el.dataset.id);
+      var cost = Number(el.dataset.cost);
+      if (!g) return;
+      U.closeModal();
+      if (window._S.worker.coins < cost) { U.toast('鲁班币不足'); return; }
       window._S.worker.coins -= cost;
-      o.status = '已接单';
-      log(o, '鲁班币强抢成功（−' + cost + ' 枚）');
-      window.Store.save(window._S);
-      U.toast('强抢成功！已消耗 ' + cost + ' 枚鲁班币');
+      window._S.mallOrders.unshift({
+        id: 'MO' + Date.now(), time: '刚刚', goods: g.id, qty: 1, status: '待领取',
+        code: String(Date.now()).slice(-12), orderNo: String(Date.now()), orderedAt: '刚刚'
+      });
+      Store.save(window._S);
+      U.toast('兑换成功，凭领取码到库房领取');
       render();
     },
-
-    /* 本周复训签到 */
-    'checkin': function () {
-      window._S.worker.retrainDone = true;
-      window.Store.save(window._S);
-      U.toast('签到成功，本周复训已完成');
-      render();
+    'mo-tab': function (el) { window._moTab = el.dataset.tab; render(); },
+    'open-morder': function (el) { location.hash = '#/morder/' + el.dataset.id; },
+    'copy-code': function (el) {
+      var code = el.dataset.code;
+      if (navigator.clipboard) navigator.clipboard.writeText(code);
+      U.toast('领取码已复制：' + code);
     },
 
-    /* 重置演示数据 */
+    /* 我的 */
+    'fb-submit': function () {
+      var v = (document.getElementById('fb-text') || {}).value || '';
+      if (!v.trim()) { U.toast('请填写反馈内容'); return; }
+      U.toast('已收到您的反馈，感谢！');
+      history.back();
+    },
     'reset': function () {
-      if (!window.confirm('将清空本地操作记录并恢复演示数据，确认吗？')) return;
-      window._S = window.Store.reset();
-      window._orderTab = '全部';
+      U.confirm('重置演示数据', '将清空本地操作记录并恢复演示数据，确认吗？', '确认', 'do-reset');
+    },
+    'do-reset': function () {
+      U.closeModal();
+      window._S = Store.reset();
       U.toast('已恢复演示数据');
+      location.hash = '#/home';
       render();
     }
   };
@@ -201,14 +301,22 @@
     var fn = ACT[el.dataset.act];
     if (fn) { e.preventDefault(); fn(el); }
   });
+  /* 点遮罩关闭弹窗 */
+  document.getElementById('modal').addEventListener('click', function (e) {
+    if (e.target.id === 'modal') U.closeModal();
+  });
+  /* 字数统计 */
+  document.addEventListener('input', function (e) {
+    if (e.target.id === 'node-remark') {
+      var c = document.getElementById('node-count');
+      if (c) c.textContent = e.target.value.length + '/50';
+    }
+    if (e.target.id === 'fb-text') {
+      var c2 = document.getElementById('fb-count');
+      if (c2) c2.textContent = e.target.value.length;
+    }
+  });
 
   window.addEventListener('hashchange', render);
-
-  /* 倒计时页面每 30 秒刷新一次 */
-  setInterval(function () {
-    var h = location.hash || '#/home';
-    if (['#/home', '#/grab'].indexOf(h.split('/').slice(0, 2).join('/')) >= 0) render();
-  }, 30000);
-
   render();
 })();

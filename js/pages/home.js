@@ -1,64 +1,82 @@
-/* 工作台首页 */
+/* 首页 / 公告 / 消息 */
 window.Pages = window.Pages || {};
-Pages.home = function (S) {
+(function () {
   var U = window.UI;
-  var w = S.worker;
-  var mine = S.orders.filter(function (o) { return o.status !== '待抢单'; });
-  var doing = mine.filter(function (o) { return ['已接单', '施工中', '待验收'].indexOf(o.status) >= 0; }).length;
-  var pending = mine.filter(function (o) { return o.status === '待确认'; });
-  var done = mine.filter(function (o) { return o.status === '已完成'; }).length;
 
-  var todo = '';
-  if (pending.length) {
-    var o = pending[0];
-    todo += '<div class="todo-card" data-act="go" data-go="#/order/' + o.id + '">' +
-      '<div class="dot"></div><div class="txt"><b>您有 1 条指派订单待确认</b>' +
-      '<span class="muted">' + U.esc(o.title) + ' · 剩余 ' + U.dur(U.left(o.deadline)) + '，超时未确认将影响响应时效评分</span></div>' +
-      '<button class="btn btn-primary btn-sm">去确认</button></div>';
-  }
-  if (!w.retrainDone) {
-    todo += '<div class="todo-card" data-act="go" data-go="#/profile">' +
-      '<div class="dot"></div><div class="txt"><b>本周在岗复训未签到</b>' +
-      '<span class="muted">活跃工人培训参与率需 ≥ 80%，请在本周内完成</span></div>' +
-      '<button class="btn btn-primary btn-sm">去签到</button></div>';
-  }
+  /* ---------- 首页 ---------- */
+  Pages.home = function (S) {
+    var unreadMsg = S.messages.some(function (m) { return m.unread; });
+    var html =
+      '<div class="banner">' +
+        '<div class="code">让每一个家都更好 · <b>超放心</b></div>' +
+        '<div class="brand">晶鲤焕新家</div>' +
+        '<div class="slogan"><span class="pill">超放心</span><span class="rest">家装</span></div>' +
+      '</div>' +
+      '<div class="notice-card">' +
+        '<div class="hd"><span class="t">公告</span><span class="more" data-act="go" data-go="#/notices">更多</span></div>' +
+        S.notices.slice(0, 4).map(function (n) {
+          return '<div class="notice-item" data-act="open-notice" data-id="' + n.id + '">' +
+            '<div class="txt"><div class="tt">' + U.esc(n.title) + '</div>' +
+            '<div class="tm">' + U.esc(n.time) + '</div></div>' +
+            '<span class="arrow">' + U.ic.right + '</span></div>';
+        }).join('') +
+      '</div>' +
+      '<div class="entry-grid">' +
+        entry('整改', 'c1', '#/rectify', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h10M4 18h7"/><path d="m16 15 2 2 4-4"/></svg>') +
+        entry('课堂', 'c2', '#/study', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-5 9 5-9 5z"/><path d="M7 11.5V16c0 1.4 2.2 2.6 5 2.6s5-1.2 5-2.6v-4.5"/></svg>') +
+        entry('评级', 'c3', '#/rating', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="m12 3 2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.4l-5.2 2.8 1-5.9-4.3-4.1 5.9-.8z"/></svg>') +
+        entry('买工具', 'c4', '#/mall', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16l-1.3 11.2a2 2 0 0 1-2 1.8H7.3a2 2 0 0 1-2-1.8z"/><path d="M9 11V6a3 3 0 0 1 6 0v5"/></svg>') +
+      '</div>' +
+      '<div class="notify-bar" data-act="go" data-go="#/messages">' +
+        '<span class="bell">🔔</span><span class="txt">' + (unreadMsg ? '接到一个新项目' : '暂无新消息') + '</span>' +
+        '<span class="arrow">' + U.ic.right + '</span>' +
+      '</div>';
+    return html;
 
-  return '' +
-    '<div class="hero">' +
-      '<div class="row">' +
-        '<div class="avatar">' + U.esc(w.name.charAt(0)) + '</div>' +
-        '<div class="hello"><b>' + greeting() + '，' + U.esc(w.name.charAt(0)) + '师傅</b>' +
-        '<span>' + U.esc(w.trade) + ' · ' + U.esc(w.level) + '</span></div>' +
-        '<div class="coin-chip">🪙 <b>' + U.coins(w.coins) + '</b> 鲁班币</div>' +
-      '</div>' +
-      '<div class="brand">晶鲤焕新家 · 工人端</div>' +
-    '</div>' +
-    '<div class="page">' +
-      '<div class="stat-grid" style="margin-bottom:12px">' +
-        '<div class="stat"><b>' + doing + '</b><span>进行中订单</span></div>' +
-        '<div class="stat"><b>' + pending.length + '</b><span>待确认</span></div>' +
-        '<div class="stat"><b>' + done + '</b><span>累计完成</span></div>' +
-      '</div>' +
-      todo +
-      '<div class="quick-grid" style="margin-bottom:12px">' +
-        '<div class="quick" data-act="go" data-go="#/grab"><div class="ico">⚡</div><div>抢单大厅</div></div>' +
-        '<div class="quick" data-act="go" data-go="#/orders"><div class="ico">📋</div><div>我的订单</div></div>' +
-        '<div class="quick" data-act="go" data-go="#/wallet"><div class="ico">🪙</div><div>鲁班币</div></div>' +
-        '<div class="quick" data-act="go" data-go="#/profile"><div class="ico">🎓</div><div>培训签到</div></div>' +
-      '</div>' +
-      '<div class="card"><div class="card-title">平台公告</div>' +
-        '<p class="notice">· 三级派单机制：客户指派 → 工人抢单（120 分钟窗口）→ 服务商指派兜底<br>' +
-        '· 指派订单请在 120 分钟内确认，超时未确认将拉低响应时效评分<br>' +
-        '· 完成订单 +10 鲁班币，客户好评再 +5；鲁班币可用于强抢订单与排名置顶</p>' +
-      '</div>' +
-    '</div>';
+    function entry(name, cls, go, svg) {
+      return '<div class="entry" data-act="go" data-go="' + go + '"><span class="ico ' + cls + '">' + svg + '</span><span>' + name + '</span></div>';
+    }
+  };
 
-  function greeting() {
-    var h = new Date().getHours();
-    if (h < 6) return '夜深了';
-    if (h < 11) return '早上好';
-    if (h < 14) return '中午好';
-    if (h < 18) return '下午好';
-    return '晚上好';
-  }
-};
+  /* ---------- 公告列表 ---------- */
+  Pages.notices = function (S) {
+    var groups = {};
+    S.notices.forEach(function (n) { (groups[n.time] = groups[n.time] || []).push(n); });
+    return U.nav('公告') + Object.keys(groups).map(function (t) {
+      return '<div class="time-group">' + U.esc(t) + '</div>' + groups[t].map(function (n) {
+        return '<div class="msg-card" data-act="open-notice" data-id="' + n.id + '">' +
+          '<div class="hd">' + (n.unread ? '<span class="dot"></span>' : '') +
+          '<span class="tt">' + U.esc(n.title) + '</span></div>' +
+          '<div class="body">' + U.esc(n.body.length > 42 ? n.body.slice(0, 42) + '…' : n.body) + '</div>' +
+          '<div style="text-align:right;margin-top:10px;" class="link-green">查看详情 ›</div></div>';
+      }).join('');
+    }).join('');
+  };
+
+  /* ---------- 公告详情 ---------- */
+  Pages.noticeDetail = function (S, id) {
+    var n = S.notices.find(function (x) { return x.id === id; }) || S.notices[0];
+    n.unread = false;
+    return U.nav('公告详情') +
+      '<div class="card">' +
+        '<div class="h1">' + U.esc(n.title) + '</div>' +
+        '<div class="sub" style="margin-top:8px;">发布时间：' + U.esc(n.time) + '&nbsp;&nbsp;发布者：平台运营中心</div>' +
+        '<div class="divider" style="margin:12px 0;"></div>' +
+        '<div style="font-size:14px;line-height:1.9;color:#333;white-space:pre-wrap;">' + U.esc(n.body) + '</div>' +
+      '</div>';
+  };
+
+  /* ---------- 消息 ---------- */
+  Pages.messages = function (S) {
+    var groups = {};
+    S.messages.forEach(function (m) { (groups[m.time] = groups[m.time] || []).push(m); });
+    return U.nav('消息', '全部已读', 'read-all') + Object.keys(groups).map(function (t) {
+      return '<div class="time-group">' + U.esc(t) + '</div>' + groups[t].map(function (m) {
+        return '<div class="msg-card">' +
+          '<div class="hd">' + (m.unread ? '<span class="dot"></span>' : '') +
+          '<span class="tt">' + U.esc(m.title) + '</span><span class="go">›</span></div>' +
+          '<div class="body">' + U.esc(m.body) + '</div></div>';
+      }).join('');
+    }).join('');
+  };
+})();

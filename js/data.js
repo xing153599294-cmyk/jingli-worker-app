@@ -1,225 +1,286 @@
-/* 种子数据 —— 晶鲤焕新家 · 工人端（演示数据） */
+/* 种子数据 —— 晶鲤焕新家 · 产业工人端（按产业工人设计稿演示） */
 window.SEED = (function () {
   var now = Date.now();
-  var M = 60 * 1000;
-  var D = 24 * 60 * M;
-
-  function wn(name) {
-    return { name: name, status: '待施工', photos: [], remark: '' };
+  var D = 24 * 60 * 60 * 1000;
+  function day(offset) { return new Date(now + offset * D); }
+  function ymd(offset) {
+    var d = day(offset), p = function (x) { return (x < 10 ? '0' : '') + x; };
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
   }
-  var wNodes = ['基层处理', '防水施工', '瓷砖铺贴', '勾缝与清洁'].map(wn);
 
   return {
+    /* ---------- 工人档案 ---------- */
     worker: {
-      name: '周建国',
-      trade: '瓦工',
-      level: '高级技工',
-      joinedAt: '2024-03-12',
-      idVerified: true,
-      cert: { name: '瓷砖镶贴职业技能证', no: 'JL-****8821', expires: '2027-06-30' },
-      insurance: { status: '在保', name: '雇主责任险', expires: '2026-12-31' },
-      regions: { main: ['朝阳区', '海淀区'], sub: ['通州区'] },
-      coins: 128,
-      retrainDone: false,
-      training: {
-        admission: [
-          { name: '平台规则与安全', done: true },
-          { name: '工种实操规范', done: true },
-          { name: '服务礼仪', done: true },
-          { name: '考核认证', done: true }
-        ]
-      },
-      score: {
-        overall: 4.6,
-        rank: 3,
-        total: 28,
-        trend: { last30: 4.7, history: 4.5 },
-        dims: [
-          { name: '施工质量', weight: 30, val: 4.8 },
-          { name: '现场卫生', weight: 20, val: 4.5 },
-          { name: '用户评价', weight: 30, val: 4.7 },
-          { name: '响应时效', weight: 20, val: 4.4 }
-        ]
-      }
+      name: '王皓',
+      phone: '157****6291',
+      level: '高级',                 /* 当前等级 */
+      craft: 16798,                  /* 匠心值 */
+      sitesActive: 34,               /* 当前进行工地数 */
+      avatar: '🧑‍🔧',
+      income: { total: 3499.33, pending: 3499.33, year: 3499.33, monthNew: 13243.00 },
+      coins: 23346,                  /* 鲁班币 */
+      doneLessons: 34, leftLessons: 123,
+      rating: { nowProgress: 1, nowTotal: 4, period: '03月01日至03月31日', next: '技师', nextProgress: 0, nextTotal: 4, nextScore: 90 }
     },
 
-    orders: [
+    /* ---------- 接单（可接单 / 已接单） ---------- */
+    grabs: [
       {
-        id: 'WO-2609-018',
-        title: '王先生 · 望京西园三区',
-        customer: '王先生',
-        phone: '138****6201',
-        address: '朝阳区望京西园三区 12 号楼 2 单元 501',
-        trade: '瓦工',
-        work: '厨卫墙地砖铺贴约 48㎡，含防水',
-        amount: 12600,
-        rate: 0.125,
-        status: '待确认',
-        source: '服务商指派（德邦 · 李经理）',
-        deadline: now + 47 * M,
-        nodes: JSON.parse(JSON.stringify(wNodes)),
-        timeline: [
-          { time: now - 13 * M, text: '服务商已指派本订单给您，请在 120 分钟内确认' }
+        id: 'G1', tag: '整装', name: '柴耀强香榭水岸',
+        addr: '天津市天津市河西区瑞江花园梅苑15-2-101',
+        range: '1月5日-1月25日',
+        desc: '墙面水泥砂浆找平找方、卫生间墙面防水施工…',
+        status: '可接单',
+        manager: '王东东 / 13000001111',
+        cycle: '2022年1月5日-2022年1月25日',
+        works: [
+          { name: '墙面水泥砂浆找平找方', qty: '234平米', price: 300.00, range: '2022年01月05日-2022年01月05日' },
+          { name: '卫生间墙面防水施工', qty: '234平米', price: 234.00, range: '2022年01月05日-2022年01月05日' },
+          { name: '墙面瓷砖铺贴', qty: '234平米', price: 300.00, range: '2022年01月05日-2022年01月05日' },
+          { name: '地面水泥砂浆找平', qty: '234平米', price: 300.00, range: '2022年01月05日-2022年01月05日' },
+          { name: '墙面瓷砖铺贴', qty: '234平米', price: 300.00, range: '2022年01月05日-2022年01月05日' }
         ]
       },
       {
-        id: 'WO-2609-021',
-        title: '刘女士 · 橡树湾四期',
-        customer: '刘女士',
-        phone: '159****3348',
-        address: '海淀区橡树湾四期 6 号楼 1-302',
-        trade: '瓦工',
-        work: '厨卫墙地砖铺贴约 60㎡',
-        amount: 9800,
-        rate: 0.125,
-        status: '待抢单',
-        hot: true,
-        grabDeadline: now + 96 * M,
-        boostCost: 50,
-        nodes: JSON.parse(JSON.stringify(wNodes)),
-        timeline: [{ time: now - 24 * M, text: '订单进入抢单大厅' }]
-      },
-      {
-        id: 'WO-2609-023',
-        title: '赵先生 · 富力城 D 区',
-        customer: '赵先生',
-        phone: '186****7712',
-        address: '朝阳区富力城 D 区 15 号楼 2-1102',
-        trade: '瓦工',
-        work: '客厅地砖 800×800 铺贴约 75㎡',
-        amount: 15400,
-        rate: 0.125,
-        status: '待抢单',
-        grabDeadline: now + 61 * M,
-        boostCost: 50,
-        nodes: JSON.parse(JSON.stringify(wNodes)),
-        timeline: [{ time: now - 59 * M, text: '订单进入抢单大厅' }]
-      },
-      {
-        id: 'WO-2609-015',
-        title: '陈女士 · 保利珑门',
-        customer: '陈女士',
-        phone: '137****9055',
-        address: '朝阳区保利珑门 3 号楼 1-1801',
-        trade: '瓦工',
-        work: '卫生间墙地砖铺贴 + 二次防水',
-        amount: 8900,
-        rate: 0.125,
-        status: '施工中',
-        nodes: [
-          { name: '基层处理', status: '已完成', photos: [1, 1], remark: '' },
-          { name: '防水施工', status: '已完成', photos: [1], remark: '闭水试验 48 小时，楼下无渗漏' },
-          { name: '瓷砖铺贴', status: '待施工', photos: [], remark: '' },
-          { name: '勾缝与清洁', status: '待施工', photos: [], remark: '' }
-        ],
-        timeline: [
-          { time: now - 6 * D, text: '订单接单成功' },
-          { time: now - 5 * D, text: '开始施工' },
-          { time: now - 3 * D, text: '基层处理完成，已上传照片' },
-          { time: now - 1 * D, text: '防水施工完成，闭水试验通过' }
+        id: 'G2', tag: '整装', name: '柴耀强香榭水岸',
+        addr: '天津市天津市河西区瑞江花园梅苑15-2-101',
+        range: '1月5日-1月25日',
+        desc: '墙面水泥砂浆找平找方、卫生间墙面防水施工…',
+        status: '可接单',
+        manager: '王东东 / 13000001111',
+        cycle: '2022年1月5日-2022年1月25日',
+        works: [
+          { name: '墙面水泥砂浆找平找方', qty: '234平米', price: 300.00, range: '2022年01月05日-2022年01月05日' },
+          { name: '卫生间墙面防水施工', qty: '234平米', price: 234.00, range: '2022年01月05日-2022年01月05日' }
         ]
       },
       {
-        id: 'WO-2609-009',
-        title: '孙先生 · 华润公元九里',
-        customer: '孙先生',
-        phone: '150****2266',
-        address: '海淀区华润公元九里 8 号楼 2-602',
-        trade: '瓦工',
-        work: '阳台墙地砖铺贴约 25㎡',
-        amount: 7200,
-        rate: 0.125,
+        id: 'G3', tag: '局装', name: '马泺讯融侨建筑',
+        addr: '北京市北京市海淀区志新北里10号楼1门202',
+        range: '1月5日-1月25日',
+        desc: '卫生间墙面防水施工、闭水试验…',
         status: '已接单',
-        nodes: JSON.parse(JSON.stringify(wNodes)),
-        timeline: [
-          { time: now - 2 * D, text: '订单接单成功，请与客户约定进场时间' }
-        ]
-      },
-      {
-        id: 'WO-2609-002',
-        title: '林女士 · 龙湖滟澜山',
-        customer: '林女士',
-        phone: '188****4431',
-        address: '朝阳区龙湖滟澜山 22 号楼 3-201',
-        trade: '瓦工',
-        work: '全屋墙地砖铺贴约 110㎡',
-        amount: 13800,
-        rate: 0.125,
-        status: '待验收',
-        nodes: [
-          { name: '基层处理', status: '已完成', photos: [1], remark: '' },
-          { name: '防水施工', status: '已完成', photos: [1], remark: '闭水试验通过' },
-          { name: '瓷砖铺贴', status: '已完成', photos: [1, 1], remark: '' },
-          { name: '勾缝与清洁', status: '已完成', photos: [1], remark: '现场已清理' }
-        ],
-        timeline: [
-          { time: now - 20 * D, text: '订单接单成功' },
-          { time: now - 12 * D, text: '全部节点完成，已提交验收' },
-          { time: now - 12 * D, text: '项目管家将在 24 小时内上门验收' }
-        ]
-      },
-      {
-        id: 'WO-2608-030',
-        title: '钱先生 · 中海枫涟山庄',
-        customer: '钱先生',
-        phone: '135****8874',
-        address: '海淀区中海枫涟山庄 9 号楼 1-401',
-        trade: '瓦工',
-        work: '厨卫墙地砖铺贴约 52㎡',
-        amount: 11200,
-        rate: 0.125,
-        status: '已完成',
-        completedAt: now - 23 * D,
-        score: {
-          quality: 5, hygiene: 5, rating: 5, speed: 5, overall: 4.9,
-          comment: '贴砖非常平整，缝隙均匀，现场每天收得干干净净，很省心。'
-        },
-        nodes: JSON.parse(JSON.stringify(wNodes)).map(function (n) {
-          n.status = '已完成'; n.photos = [1]; return n;
-        }),
-        timeline: [
-          { time: now - 30 * D, text: '订单接单成功' },
-          { time: now - 23 * D, text: '验收通过，客户评分 4.9' }
-        ]
-      },
-      {
-        id: 'WO-2608-011',
-        title: '吴先生 · 住总万科橙',
-        customer: '吴先生',
-        phone: '133****5109',
-        address: '通州区住总万科橙 5 号楼 2-903',
-        trade: '瓦工',
-        work: '阳台墙地砖铺贴约 20㎡',
-        amount: 6800,
-        rate: 0.125,
-        status: '已完成',
-        completedAt: now - 37 * D,
-        score: {
-          quality: 4, hygiene: 4, rating: 5, speed: 4, overall: 4.2,
-          comment: '整体不错，有一处砖面有空鼓，复验后已整改。'
-        },
-        nodes: JSON.parse(JSON.stringify(wNodes)).map(function (n) {
-          n.status = '已完成'; n.photos = [1]; return n;
-        }),
-        timeline: [
-          { time: now - 44 * D, text: '订单接单成功' },
-          { time: now - 37 * D, text: '验收通过，客户评分 4.2' }
+        accepted: true,
+        manager: '王东东 / 13000001111',
+        cycle: '2022年1月5日-2022年1月25日',
+        works: [
+          { name: '墙面水泥砂浆找平找方', qty: '234平米', price: 300.00, range: '2022年01月05日-2022年01月05日' },
+          { name: '卫生间墙面防水施工', qty: '234平米', price: 234.00, range: '2022年01月05日-2022年01月05日' }
         ]
       }
     ],
 
-    coinRecords: [
-      { time: now - 3 * D, label: '完成订单 WO-2608-030', delta: 10 },
-      { time: now - 3 * D, label: '获得客户好评奖励', delta: 5 },
-      { time: now - 5 * D, label: '鲁班币强抢 WO-2609-014', delta: -50 },
-      { time: now - 9 * D, label: '完成订单 WO-2608-021', delta: 10 },
-      { time: now - 12 * D, label: '排名置顶（7 天）', delta: -30 }
+    /* ---------- 施工中（周排期 + 节点推进） ---------- */
+    projects: [
+      {
+        id: 'P1', tag: '整装', name: '柴耀强香榭水岸',
+        addr: '天津市天津市河西区瑞江花园梅苑15-2-101',
+        phase: '开工阶段',
+        cycle: '2022年1月5日-2022年1月25日',
+        manager: '王东东 / 13000001111',
+        nodes: [
+          { name: '营销保护', status: '已完成', est: '预计结束: 4月28日', over: 0, qty: '234平米', planStart: '2021年4月28日', planEnd: '2021年4月28日' },
+          { name: '施工放线', status: '进行中', est: '预计结束: 4月28日', over: 0, qty: '234平米', planStart: '2021年4月28日', planEnd: '2021年4月28日',
+            require: '要求一条线调整清晰、位置准确，无物体遮挡，能够清晰展示一米线位置及相应指示标识',
+            shotReq: '拍摄要求（不少于1张，插座下面完成线、开关下面完成线上传要求与一米线上传相同，当三条标识可在同一墙上同时展示时，允许上传一张整体照片，上传要求不变）',
+            std: ['地面找平表面平整度误差应≤3mm（2m靠尺）', '地面找平表面是否光滑、密实（无起砂、蜂窝等缺陷）', '地面找平表面是否有裂缝（但通常管线敷设处或正常收缩时，开裂属正常现象）', '地面找平表面是否有空鼓'] },
+          { name: '墙面瓷砖铺贴', status: '待施工', est: '预计结束: 5月10日', over: 0, qty: '234平米', planStart: '2021年5月10日', planEnd: '2021年5月10日' }
+        ],
+        drawings: { effect: '现代简约 · 客餐厅', plan: '两室两厅 89㎡' },
+        materials: [
+          { code: 'D220001386', status: '待出库', plan: '12-12', items: ['雷士2.5寸筒灯（开孔7.5厘米）NLED91225 ×10卷', '雷士2.5寸筒灯（开孔7.5厘米）NLED91225 ×10卷'] },
+          { code: 'D220001387', status: '待出库', plan: '12-15', items: ['轻钢龙骨 50型 3米 ×20根', '石膏板 9.5mm ×30张'] }
+        ],
+        settlements: [
+          { name: '第一次工资', amount: '2389.99元', status: '待结算', time: '2022-03-23' },
+          { name: '第二次工资', amount: '2389.99元', status: '已结算', time: '2022-03-23' }
+        ]
+      },
+      {
+        id: 'P2', tag: '局装', name: '马泺讯融侨建筑',
+        addr: '北京市北京市海淀区志新北里10号楼1门202',
+        phase: '开工阶段',
+        cycle: '2022年1月5日-2022年1月25日',
+        manager: '王东东 / 13000001111',
+        nodes: [
+          { name: '施工放线整改审核', status: '已完成', est: '预计结束: 4月28日', over: 0, qty: '234平米', planStart: '2021年4月28日', planEnd: '2021年4月28日' },
+          { name: '施工放线', status: '进行中', est: '预计结束: 4月28日', over: 3, qty: '234平米', planStart: '2021年4月28日', planEnd: '2021年4月28日',
+            require: '要求一条线调整清晰、位置准确，无物体遮挡，能够清晰展示一米线位置及相应指示标识',
+            shotReq: '拍摄要求（不少于1张，插座下面完成线、开关下面完成线上传要求与一米线上传相同，当三条标识可在同一墙上同时展示时，允许上传一张整体照片，上传要求不变）',
+            std: ['地面找平表面平整度误差应≤3mm（2m靠尺）', '地面找平表面是否光滑、密实（无起砂、蜂窝等缺陷）', '地面找平表面是否有裂缝（但通常管线敷设处或正常收缩时，开裂属正常现象）', '地面找平表面是否有空鼓'] }
+        ],
+        drawings: { effect: '北欧原木 · 卧室', plan: '一室一厅 45㎡' },
+        materials: [
+          { code: 'D220002101', status: '已出库', plan: '12-02', items: ['德高防水K11 ×8桶', '美缝剂金色 ×12支'] }
+        ],
+        settlements: [
+          { name: '第一期工资', amount: '2349.99元', status: '已结算', time: '2022-03-23' }
+        ]
+      }
     ],
 
-    settlements: [
-      { order: 'WO-2609-002', title: '林女士 · 龙湖滟澜山', amount: 13800, rate: 0.125, status: '待结算', note: '验收通过后 3 个工作日内到账' },
-      { order: 'WO-2608-030', title: '钱先生 · 中海枫涟山庄', amount: 11200, rate: 0.125, status: '已结算', date: '2026-09-05' },
-      { order: 'WO-2608-011', title: '吴先生 · 住总万科橙', amount: 6800, rate: 0.125, status: '已结算', date: '2026-08-22' }
+    /* ---------- 施工安排（本月日历：seg: 全天/上午/下午; done: 已完成） ---------- */
+    scheduleSeed: [
+      { day: 3, seg: '上午', done: true }, { day: 14, seg: '上午', done: true },
+      { day: 17, seg: '全天' }, { day: 19, seg: '上午' },
+      { day: 22, seg: '全天' }, { day: 23, seg: '全天' },
+      { day: 24, seg: '上午' }, { day: 24, seg: '下午' },
+      { day: 31, seg: '下午' }
+    ],
+    schedule: [],   /* 首次进入时由 scheduleSeed 生成（带项目信息） */
+    reschedules: [
+      {
+        id: 'R1', proj: '马泺讯融侨建筑', addr: '北京市北京市海淀区志新北里10号楼1门202',
+        manager: '王东东 / 13000001111', node: '墙面水泥砂浆找平找方',
+        plan: '03-22/全天、03-23/全天、03-24/全天',
+        adjust: '03-25/上午、03-26/全天、03-27/下午',
+        note: '因疫情，不能继续施工，需要调整日程',
+        voice: '60″', status: '已退回'
+      }
+    ],
+
+    /* ---------- 全部接单记录 ---------- */
+    records: [
+      { id: 'RC1', tag: '整装', name: '柴耀强香榭水岸', addr: '天津市天津市河西区瑞江花园梅苑15-2-101', range: '1月5日-1月25日', desc: '墙面水泥砂浆找平找方、卫生间墙面防水施工…', status: '待施工' },
+      { id: 'RC2', tag: '整装', name: '柴耀强香榭水岸', addr: '天津市天津市河西区瑞江花园梅苑15-2-101', range: '1月5日-1月25日', desc: '墙面水泥砂浆找平找方、卫生间墙面防水施工…', status: '待施工' },
+      { id: 'RC3', tag: '局装', name: '马泺讯融侨建筑', addr: '北京市北京市海淀区志新北里10号楼1门202', range: '1月5日-1月25日', desc: '卫生间墙面防水施工、闭水试验…', status: '施工中' },
+      { id: 'RC4', tag: '整装', name: '柴耀强香榭水岸', addr: '天津市天津市河西区瑞江花园梅苑15-2-101', range: '1月5日-1月25日', desc: '墙面水泥砂浆找平找方、卫生间墙面防水施工…', status: '结算中' },
+      { id: 'RC5', tag: '整装', name: '柴耀强香榭水岸', addr: '天津市天津市河西区瑞江花园梅苑15-2-101', range: '1月5日-1月25日', desc: '墙面水泥砂浆找平找方、卫生间墙面防水施工…', status: '已结算' }
+    ],
+
+    /* ---------- 整改单 ---------- */
+    rectifies: [
+      {
+        id: 'RF1', tag: '整装', name: '柴耀强香榭水岸', addr: '天津市天津市河西区瑞江花园梅苑15-2-101',
+        title: '安全检查', status: '待整改',
+        deadline: ymd(3), person: '工人 / 张乐',
+        content: ['需整改内容照片一', '需整改内容照片二'],
+        demand: '地面防水有问题，请整改后重新上传'
+      },
+      {
+        id: 'RF2', tag: '整装', name: '柴耀强香榭水岸', addr: '天津市天津市河西区瑞江花园梅苑15-2-101',
+        title: '施工放线', status: '已退回',
+        deadline: ymd(5), person: '工人 / 张乐',
+        content: ['需整改内容照片一'],
+        demand: '一米线标识不清晰，请重新放线并上传'
+      },
+      {
+        id: 'RF3', tag: '整装', name: '柴耀强香榭水岸', addr: '天津市天津市河西区瑞江花园梅苑15-2-101',
+        title: '安全检查', status: '已完成',
+        deadline: ymd(-2), person: '工人 / 张乐',
+        content: ['需整改内容照片一', '需整改内容照片二'],
+        demand: '地面防水有问题，请整改后重新上传',
+        reply: '地面防水问题已处理，已重新上传',
+        photos: 1, done: true
+      },
+      {
+        id: 'RF4', tag: '整装', name: '柴耀强香榭水岸', addr: '天津市天津市河西区瑞江花园梅苑15-2-101',
+        title: '施工放线', status: '已完成',
+        deadline: ymd(-4), person: '工人 / 张乐',
+        content: ['需整改内容照片一'],
+        demand: '一米线标识不清晰，请重新放线并上传',
+        reply: '已重新放线并上传照片',
+        photos: 1, done: true
+      }
+    ],
+
+    /* ---------- 课堂 ---------- */
+    tasks: [
+      { id: 'T1', kind: '必修', title: '高级技师晋级必备技能', sub: '—— 晋级之路课程', course: '木制吸音板墙面安装工艺', desc: '木制吸音板，采用国内外先进技术，运用最新声学理论', left: '倒计时：3天21小时', hours: '课时：共 23 小时' },
+      { id: 'T2', kind: '提升', title: '高级技师晋级必备技能', sub: '—— 晋级之路课程', course: '木制吸音板墙面安装工艺', desc: '木制吸音板，采用国内外先进技术，运用最新声学理论', left: '倒计时：3天21小时', hours: '课时：共 23 小时' }
+    ],
+    history: { id: 'H1', title: '01 地板施工课程', hours: '课时: 10:23', seen: '已观看至: 05:12' },
+    recommends: [
+      { id: 'C1', title: '02 地板施工课程', hours: '课时: 10:23', learners: '已上课人数: 23人', done: true },
+      { id: 'C2', title: '02 地板施工课程', hours: '课时: 10:23', learners: '已上课人数: 23人', done: false },
+      { id: 'C3', title: '02 地板施工课程', hours: '课时: 10:23', learners: '已上课人数: 23人', done: false }
+    ],
+    groups: [
+      { name: '技师课程', count: '共 22 课节', desc: '木制吸音板，采用国内外先进技术，运用最新声学理论', done: true },
+      { name: '墙面瓷砖铺贴', count: '共 4 课节', desc: '木制吸音板，采用国内外先进技术，运用最新声学理论', done: false },
+      { name: '地面水泥砂浆找平', count: '共 8 课节', desc: '木制吸音板，采用国内外先进技术，运用最新声学理论', done: false }
+    ],
+    lessons: [
+      { id: 'L1', title: '03 地板施工课程', cat: '地面工程', done: false, hours: '10:23', learned: '03:23', learners: 23, likes: 2123, uploader: '系统' },
+      { id: 'L2', title: '02 地板施工课程', cat: '地面工程', done: true, hours: '10:23', learned: '10:23', learners: 23, likes: 1980, uploader: '系统' }
+    ],
+    comments: [
+      { name: '张乐', time: '2022-03-22 17:02', text: '讲的很细致，视频很有帮助受益匪浅！', color: '#7B68EE' },
+      { name: '王皓', time: '2022-03-22 17:02', text: '讲的很细致，如果有实操培训就更棒了', color: '#F59A23', reply: { name: '李冬亮', time: '2022-03-22 17:02', text: '回复 王皓：后续我们会开展线下培训课程的！' } }
+    ],
+
+    /* ---------- 评级 ---------- */
+    ratingLevels: [
+      { lv: '初级', lessons: '4课节', exam: '初级评级考试', score: '80分以上' },
+      { lv: '中级', lessons: '8课节', exam: '中级评级考试', score: '80分以上' },
+      { lv: '高级', lessons: '14课节', exam: '高级评级考试', score: '85分以上' },
+      { lv: '技师', lessons: '22课节', exam: '技师评级考试', score: '90分以上' },
+      { lv: '高级技师', lessons: '32课节', exam: '高级技师评级考试', score: '95分以上' }
+    ],
+    ratingGuide: '学习初级课程4课节，并完成初级评级考试，考试成绩在80分以上；每季度完成保级课程2课节，并完成保级课程考试，考试成绩在80分以上',
+
+    /* ---------- 考试 ---------- */
+    exams: [
+      { id: 'E1', title: '产业工人初级考试', time: ymd(0) + ' 09:00 至 ' + ymd(1) + ' 23:59', form: '理论 + 实操', joined: 32, state: '进行中' },
+      { id: 'E2', title: '产业工人初级考试', time: ymd(0) + ' 09:00 至 ' + ymd(1) + ' 23:59', form: '理论 + 实操', joined: 32, state: '进行中' },
+      { id: 'E3', title: '产业工人初级考试', time: ymd(-6) + ' 09:00 至 ' + ymd(-6) + ' 23:59', form: '理论 + 实操', joined: 32, state: '已出成绩', theory: 98, ops: 92 },
+      { id: 'E4', title: '产业工人初级考试', time: ymd(-12) + ' 09:00 至 ' + ymd(-12) + ' 23:59', form: '理论 + 实操', joined: 32, state: '已出成绩', theory: 95, ops: 90 },
+      { id: 'E5', title: '产业工人中级考试', time: ymd(4) + ' 09:00 至 ' + ymd(5) + ' 23:59', form: '理论 + 实操', joined: 18, state: '未开始' }
+    ],
+
+    /* ---------- 成长记录 / 荣誉 ---------- */
+    growth: [
+      { title: '完成高级技师评级考试，成绩为95分', up: '上升等级：高级技师', time: '2020-08-27 10:33', medal: '🏆', color: '#F3E8FF' },
+      { title: '完成技师评级考试，成绩为90分', up: '上升等级：技师', time: '2020-06-27 10:33', medal: '🎖️', color: '#FDEBF3' },
+      { title: '完成高级评级考试，成绩为90分', up: '上升等级：高级', time: '2020-08-27 10:33', medal: '🏅', color: '#FFF3D6' },
+      { title: '完成中级评级考试，成绩为85分', up: '上升等级：中级', time: '2020-06-27 10:33', medal: '🥇', color: '#FFF7E0' },
+      { title: '完成初级评级考试，成绩为80分', up: '上升等级：初级', time: '2020-08-27 10:33', medal: '🎗️', color: '#F1F1F1' }
+    ],
+    honors: [
+      { title: '晶鲤焕新家2020-2021杰出贡献奖', amount: '¥ 1000.00', time: '2022-03-22', cover: '2020-2021 表彰大会' },
+      { title: '晶鲤焕新家2019-2020杰出贡献奖', amount: '¥ 1000.00', time: '2022-03-22', cover: '2019-2020 表彰大会' }
+    ],
+
+    /* ---------- 鲁班币 ---------- */
+    coinRecords: [
+      { label: '发布施工工艺视频', time: '2020-08-27 10:33', delta: 10 },
+      { label: '发布施工工艺视频', time: '2020-08-27 10:33', delta: 10 },
+      { label: '发布施工工艺视频', time: '2020-08-27 10:33', delta: 10 }
+    ],
+
+    /* ---------- 买工具（鲁班币商城） ---------- */
+    mallCats: ['测量工具', '电动工具', '仪器仪表', '电子电工', '手动工具'],
+    iconCats: [
+      { name: '游标卡尺', icon: '📏' }, { name: '钢圈尺', icon: '🗜️' },
+      { name: '轮式测距仪', icon: '🛞' }, { name: '水平尺', icon: '📐' }
+    ],
+    goods: [
+      { id: 'M1', name: '得力(deli)大轮电子数显测距轮尺手持式测量轮尺', price: 234, buyers: 84, sold: 231, icon: '🛞', brand: 'deli得力', specs: { '商品货号': 'J02003783A', '型号': 'DL4779', '施工测漏': '测距仪' } },
+      { id: 'M2', name: '得力(deli)大轮电子数显测距轮尺手持式测量轮尺', price: 2399, buyers: 84, sold: 231, icon: '📐', brand: 'deli得力', specs: { '商品货号': 'J02003783A', '型号': 'DL4779', '施工测漏': '测距仪' } },
+      { id: 'M3', name: '得力(deli)大轮电子数显测距轮尺手持式测量轮尺', price: 234, buyers: 84, sold: 231, icon: '📏', brand: 'deli得力', specs: { '商品货号': 'J02003784B', '型号': 'DL4780', '施工测漏': '测距仪' } },
+      { id: 'M4', name: '得力(deli)大轮电子数显测距轮尺手持式测量轮尺', price: 2399, buyers: 84, sold: 231, icon: '🗜️', brand: 'deli得力', specs: { '商品货号': 'J02003785C', '型号': 'DL4781', '施工测漏': '测距仪' } }
+    ],
+    mallOrders: [
+      { id: 'MO1', time: '2022-04-19 12:00', goods: 'M1', qty: 1, status: '待领取', code: '37378373827383', orderNo: '384574839283748', orderedAt: '2022-04-19 12:22:12' },
+      { id: 'MO2', time: '2022-04-19 12:00', goods: 'M2', qty: 1, status: '已领取', code: '37378373827383', orderNo: '384574839283749', orderedAt: '2022-04-19 12:22:12' }
+    ],
+
+    /* ---------- 公告 / 消息 ---------- */
+    notices: [
+      { id: 'N1', title: '产业工人支持在线查看报单记录', time: '星期三 13:21', unread: true,
+        body: '产业工人支持在线查看报单记录。产业工人支持在线查看报单记录。产业工人支持在线查看报单记录。\n\n您可以在「施工中」页随时查看每个项目的工序进度、结算记录与整改情况，所有记录支持在线追溯。' },
+      { id: 'N2', title: '关于施工节点日报上传规范的说明', time: '2021-4-28 13:21', unread: false,
+        body: '为保障验收效率，请工人在每道工序完成后 24 小时内上传施工日报：\n\n一、照片不少于 1 张，须按节点拍摄要求上传；\n二、支持语音备注（最长 60 秒）；\n三、逾期未上传的节点将影响匠心值与派单优先级。' },
+      { id: 'N3', title: '鲁班币兑换商城上新公告', time: '2021-4-20 09:00', unread: false,
+        body: '鲁班币商城本周上新测量工具、电动工具等品类，欢迎前往「首页 → 买工具」使用鲁班币兑换。兑换后凭领取码到分公司库房领取。' }
+    ],
+    messages: [
+      { id: 'MS1', time: '星期三 13:21', title: '接到一个新项目', unread: true,
+        body: '您接到一个新的项目，项目名称: 王皓曦和悦华锦，施工地址: 河北省廊坊市固安县永定河孔雀城大卫城6期11号楼3单元502室，请及时查看！' },
+      { id: 'MS2', time: '2021-4-28 13:21', title: '您的项目已被取消派工', unread: false,
+        body: '您有一个项目已取消派工，项目名称: 王皓曦和悦华锦，施工地址: 河北省廊坊市固安县永定河孔雀城大卫城6期11号楼3单元502室，若有问题请及时联系分公司的项目管家。' },
+      { id: 'MS3', time: '2021-4-28 13:21', title: '调整安排审核通过', unread: false,
+        body: '您的施工安排调整申请已审核通过，请按调整后的排期施工。若有问题请及时联系分公司的项目管家。' }
     ]
   };
 })();

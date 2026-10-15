@@ -30,6 +30,7 @@
     else if (base === 'grab') html = P.grab(window._S);
     else if (base === 'grab-detail') html = P.grabDetail(window._S, seg[1]);
     else if (base === 'build') html = P.build(window._S);
+    else if (base === 'report') html = P.report(window._S, seg[1]);
     else if (base === 'records') html = P.records(window._S);
     else if (base === 'project') html = P.project(window._S, seg[1]);
     else if (base === 'node') html = P.node(window._S, seg[1], seg[2]);
@@ -96,7 +97,135 @@
       U.closeModal();
       p.accepted = true; p.status = '已接单';
       Store.save(window._S);
-      U.toast('接单成功，请安排施工');
+      U.toast('接单成功，到工地后请先拍照打卡开工');
+      render();
+    },
+
+    /* 报工 */
+    'open-report': function (el) { location.hash = '#/report/' + el.dataset.id; },
+    'rep-checkin': function (el) {
+      var p = Store.proj(el.dataset.id);
+      if (!p) return;
+      var t = new Date(), p2 = function (x) { return (x < 10 ? '0' : '') + x; };
+      var now = p2(t.getHours()) + ':' + p2(t.getMinutes());
+      U.modal(
+        '<div class="tt">拍照打卡</div>' +
+        '<div class="bd" style="text-align:center;">' +
+          '<div class="ph-box" style="width:150px;height:100px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;color:var(--t3);">' + U.ic.camera + '</div>' +
+          '<div style="font-size:14px;line-height:2;">' + p2(t.getMonth() + 1) + '月' + t.getDate() + '日 ' + now + '<br>' +
+          '<span class="sub" style="font-size:12px;">' + U.esc(p.addr) + '</span></div>' +
+        '</div>' +
+        '<div class="btns">' +
+        '<div class="btn plain" data-act="modal-close">重拍</div>' +
+        '<div class="btn primary" data-act="rep-do-checkin" data-id="' + p.id + '">确认打卡</div></div>');
+    },
+    'rep-do-checkin': function (el) {
+      var p = Store.proj(el.dataset.id);
+      if (!p || !p.report) return;
+      var t = new Date(), p2 = function (x) { return (x < 10 ? '0' : '') + x; };
+      var d = t.getFullYear() + '-' + p2(t.getMonth() + 1) + '-' + p2(t.getDate());
+      p.report.checkin = { date: d, time: p2(t.getHours()) + ':' + p2(t.getMinutes()), photos: 1 };
+      p.report.stage = '待存照';
+      Store.save(window._S);
+      U.closeModal();
+      U.toast('打卡成功，请拍摄开工前现场情况');
+      render();
+    },
+    'rep-scene-add': function (el) {
+      var p = Store.proj(el.dataset.id);
+      if (!p || !p.report) return;
+      if (p.report.scene.length >= 9) { U.toast('最多 9 张'); return; }
+      p.report.scene.push(1);
+      Store.save(window._S);
+      U.toast('现场照片已上传');
+      render();
+    },
+    'rep-scene-del': function (el) {
+      var p = Store.proj(el.dataset.id);
+      if (p && p.report && p.report.scene.length) { p.report.scene.pop(); Store.save(window._S); render(); }
+    },
+    'rep-start': function (el) {
+      var p = Store.proj(el.dataset.id);
+      if (!p || !p.report) return;
+      if (!p.report.scene.length) { U.toast('请先上传现场情况照片'); return; }
+      p.report.stage = '施工中';
+      Store.save(window._S);
+      U.toast('已开始干活，每天收工后记得报当日进度');
+      render();
+    },
+    'rep-today-add': function (el) {
+      var p = Store.proj(el.dataset.id);
+      if (!p || !p.report) return;
+      p.report.today = p.report.today || { photos: 0, note: '' };
+      if (p.report.today.photos >= 9) { U.toast('最多 9 张'); return; }
+      p.report.today.photos++;
+      Store.save(window._S);
+      U.toast('进度照片已上传');
+      render();
+    },
+    'rep-today-del': function (el) {
+      var p = Store.proj(el.dataset.id);
+      if (p && p.report && p.report.today && p.report.today.photos) { p.report.today.photos--; Store.save(window._S); render(); }
+    },
+    'rep-daily-submit': function (el) {
+      var p = Store.proj(el.dataset.id);
+      if (!p || !p.report) return;
+      var today = p.report.today || { photos: 0, note: '' };
+      if (!today.photos) { U.toast('请先上传今日进度照片'); return; }
+      var t = new Date(), p2 = function (x) { return (x < 10 ? '0' : '') + x; };
+      var d = t.getFullYear() + '-' + p2(t.getMonth() + 1) + '-' + p2(t.getDate());
+      var note = ((document.getElementById('rep-note') || {}).value || '').trim();
+      p.report.dailies = p.report.dailies || [];
+      /* 同一天重复提交：合并到当天那条 */
+      var exist = p.report.dailies.filter(function (x) { return x.d === d; })[0];
+      if (exist) { exist.photos = today.photos; exist.note = note; }
+      else p.report.dailies.push({ d: d, photos: today.photos, note: note });
+      p.report.today = { photos: 0, note: '' };
+      Store.save(window._S);
+      U.toast('今日进度已报工');
+      render();
+    },
+    'rep-finish-req': function (el) {
+      var p = Store.proj(el.dataset.id);
+      if (!p || !p.report) return;
+      U.confirm('交活报工', '确认全部工序已干完？<br>交活后需按<b>交活标准</b>逐项拍照，全部拍完本单结束。', '开始交活', 'rep-finish-go',
+        'data-id="' + p.id + '"');
+    },
+    'rep-finish-go': function (el) {
+      var p = Store.proj(el.dataset.id);
+      if (!p || !p.report) return;
+      U.closeModal();
+      p.report.stage = '交活中';
+      Store.save(window._S);
+      U.toast('请按交活标准逐项拍照');
+      render();
+    },
+    'rep-std-photo': function (el) {
+      var p = Store.proj(el.dataset.id);
+      var s = p && p.report && p.report.standards[Number(el.dataset.idx)];
+      if (!s) return;
+      s.photos = (s.photos || 0) + 1;
+      Store.save(window._S);
+      var done = p.report.standards.filter(function (x) { return x.photos > 0; }).length;
+      U.toast(done >= p.report.standards.length ? '已拍摄，全部标准已拍照，可完成报工' : '已拍摄：' + s.name.slice(0, 16) + '…');
+      render();
+    },
+    'rep-finish': function (el) {
+      var p = Store.proj(el.dataset.id);
+      if (!p || !p.report) return;
+      var miss = p.report.standards.filter(function (x) { return !x.photos; }).length;
+      if (miss) { U.toast('还有 ' + miss + ' 项交活标准未拍照'); return; }
+      U.confirm('完成报工', '提交后本单进入验收环节，<br>确认交活照片真实有效？', '确认完成', 'rep-finish-done',
+        'data-id="' + p.id + '"');
+    },
+    'rep-finish-done': function (el) {
+      var p = Store.proj(el.dataset.id);
+      if (!p || !p.report) return;
+      U.closeModal();
+      p.report.stage = '已结束';
+      p.phase = '已完工待验收';
+      Store.save(window._S);
+      U.toast('本单报工完成，等待验收');
       render();
     },
 
@@ -310,6 +439,10 @@
     if (e.target.id === 'node-remark') {
       var c = document.getElementById('node-count');
       if (c) c.textContent = e.target.value.length + '/50';
+    }
+    if (e.target.id === 'rep-note') {
+      var c3 = document.getElementById('rep-count');
+      if (c3) c3.textContent = e.target.value.length + '/50';
     }
     if (e.target.id === 'fb-text') {
       var c2 = document.getElementById('fb-count');

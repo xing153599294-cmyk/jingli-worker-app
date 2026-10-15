@@ -78,6 +78,23 @@ window.SEED = (function () {
         phase: '开工阶段',
         cycle: '2022年1月5日-2022年1月25日',
         manager: '王东东 / 13000001111',
+        /* 报工流程状态（演示：已干 2 天、每天已报进度，尚未交活） */
+        report: {
+          stage: '施工中',            /* 待打卡 → 待存照 → 施工中 → 交活中 → 已结束 */
+          checkin: { date: ymd(0), time: '08:32', photos: 1 },
+          scene: [1, 1],
+          dailies: [
+            { d: ymd(-2), photos: 3, note: '完成一米线弹线，插座完成线已标注' },
+            { d: ymd(-1), photos: 2, note: '开关完成线完成，明日开始铺贴墙面瓷砖' }
+          ],
+          today: { photos: 0, note: '' },
+          standards: [
+            { name: '地面找平表面平整度误差 ≤3mm（2m靠尺）', photos: 0 },
+            { name: '地面找平表面光滑、密实（无起砂、蜂窝）', photos: 0 },
+            { name: '地面找平无异常裂缝、无空鼓（小锤逐点敲击）', photos: 0 },
+            { name: '成品保护完好，现场垃圾清运完毕', photos: 0 }
+          ]
+        },
         nodes: [
           { name: '营销保护', status: '已完成', est: '预计结束: 4月28日', over: 0, qty: '234平米', planStart: '2021年4月28日', planEnd: '2021年4月28日' },
           { name: '施工放线', status: '进行中', est: '预计结束: 4月28日', over: 0, qty: '234平米', planStart: '2021年4月28日', planEnd: '2021年4月28日',
@@ -102,6 +119,20 @@ window.SEED = (function () {
         phase: '开工阶段',
         cycle: '2022年1月5日-2022年1月25日',
         manager: '王东东 / 13000001111',
+        /* 报工流程状态（演示：全新单子，还没打卡，可从头走完整流程） */
+        report: {
+          stage: '待打卡',
+          checkin: null,
+          scene: [],
+          dailies: [],
+          today: { photos: 0, note: '' },
+          standards: [
+            { name: '地面找平表面平整度误差 ≤3mm（2m靠尺）', photos: 0 },
+            { name: '地面找平表面光滑、密实（无起砂、蜂窝）', photos: 0 },
+            { name: '地面找平无异常裂缝、无空鼓（小锤逐点敲击）', photos: 0 },
+            { name: '成品保护完好，现场垃圾清运完毕', photos: 0 }
+          ]
+        },
         nodes: [
           { name: '施工放线整改审核', status: '已完成', est: '预计结束: 4月28日', over: 0, qty: '234平米', planStart: '2021年4月28日', planEnd: '2021年4月28日' },
           { name: '施工放线', status: '进行中', est: '预计结束: 4月28日', over: 3, qty: '234平米', planStart: '2021年4月28日', planEnd: '2021年4月28日',

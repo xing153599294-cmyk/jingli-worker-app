@@ -1,6 +1,6 @@
 /* 本地存储层：首次进入载入种子数据，之后所有操作写入 localStorage */
 (function () {
-  var KEY = 'jingli_worker_v2';
+  var KEY = 'jingli_worker_v3';
 
   function fresh() {
     var s = JSON.parse(JSON.stringify(window.SEED));

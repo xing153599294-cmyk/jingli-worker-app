@@ -13,6 +13,25 @@ window.Pages = window.Pages || {};
     m.setDate(m.getDate() - w); m.setHours(0, 0, 0, 0); return m;
   }
 
+  /* 报工进度入口卡：显示当前报工阶段，点击进入报工页 */
+  function reportEntry(p) {
+    var r = p.report;
+    if (!r) return '';
+    var map = {
+      '待打卡': { txt: '未打卡', cls: 'gray' },
+      '待存照': { txt: '已打卡 · 待拍现场', cls: 'line' },
+      '施工中': { txt: '施工中 · 已报 ' + (r.dailies || []).length + ' 天', cls: 'line' },
+      '交活中': { txt: '交活拍照中', cls: 'jz' },
+      '已结束': { txt: '已完工待验收', cls: 'solid' }
+    };
+    var m = map[r.stage] || { txt: '未打卡', cls: 'gray' };
+    return '<div class="report-entry" data-act="open-report" data-id="' + p.id + '">' +
+      '<span class="ric">' + U.ic.camera + '</span>' +
+      '<span class="rt">报工' + (r.stage === '已结束' ? '记录' : '进度') + '</span>' +
+      '<span class="tag ' + m.cls + '">' + U.esc(m.txt) + '</span>' +
+      '<span class="arrow">' + U.ic.right + '</span></div>';
+  }
+
   /* ---------- 施工中（tab） ---------- */
   Pages.build = function (S) {
     var base = window._buildWeek || monday(new Date());
@@ -28,8 +47,15 @@ window.Pages = window.Pages || {};
         (has && !isToday ? '<div class="dot"></div>' : '') + '</div>';
     }
     var cards = S.projects.map(function (p) {
+      var rt = p.report ? ({
+        '待打卡': '<span class="tag gray">未打卡</span>',
+        '待存照': '<span class="tag line">已打卡</span>',
+        '施工中': '<span class="tag line">报工 ' + (p.report.dailies || []).length + ' 天</span>',
+        '交活中': '<span class="tag jz">交活中</span>',
+        '已结束': '<span class="tag solid">已完工待验收</span>'
+      })[p.report.stage] : '';
       return '<div class="plan-card" data-act="open-proj" data-id="' + p.id + '">' +
-        '<div class="hd">' + U.tag(p.tag) + '<span class="name">' + U.esc(p.name) + '</span></div>' +
+        '<div class="hd">' + U.tag(p.tag) + '<span class="name">' + U.esc(p.name) + '</span>' + rt + '</div>' +
         '<div class="addr">' + U.ic.pin + '<span>' + U.esc(p.addr) + '</span></div>' +
         p.nodes.map(function (n) {
           return '<div class="node-line"><span class="nm">' + U.esc(n.name) +
@@ -109,6 +135,7 @@ window.Pages = window.Pages || {};
         '<div class="rowline"><span class="k">项目周期</span><span class="v">' + U.esc(p.cycle) + '</span></div>' +
         '<div class="rowline"><span class="k">项目主管</span><span class="v">' + U.esc(p.manager) + '&nbsp;<b class="link-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.2 3.6h3.1l1.4 3.6-2 1.4a12.4 12.4 0 0 0 6.7 6.7l1.4-2 3.6 1.4v3.1a2 2 0 0 1-2.2 2A17.6 17.6 0 0 1 4.2 5.8a2 2 0 0 1 2-2.2z"/></svg></b></span></div>' +
       '</div>' +
+      reportEntry(p) +
       '<div class="proj-tabs">' + ['施工节点', '图纸', '物料配送', '结算记录'].map(function (t) {
         return '<div class="pt' + (t === tab ? ' on' : '') + '" data-act="proj-tab" data-tab="' + t + '">' + t + '</div>';
       }).join('') + '</div>' + body;
